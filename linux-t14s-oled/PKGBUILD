@@ -20,14 +20,12 @@ source=('config'
         '60-linux.hook'
         '90-linux.hook'
         'mkinitcpio.conf.d-t14s-oled.conf'
-        '0001-drm-msm-fix-race-in-Adreno-header-generation.patch'
 )
-md5sums=('SKIP'
-         'SKIP'
-         'SKIP'
-         'SKIP'
-         'SKIP'
-         'SKIP'
+md5sums=('94b7a6d290b894a81a5caf9dbed8a5af'
+         'f70da982cd3da3d37f09102eb4f621ac'
+         '0a5f16bfec6ad982a2f6782724cca8ba'
+         '6f99095fbe9f577233b53a83802aab59'
+         '8c3662b1c192655e88a704e52fc4e09a'
 )
 
 prepare() {
