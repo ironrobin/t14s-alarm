@@ -8,7 +8,7 @@ pkgbase=linux-t14s-oled
 _srcname=linux-6.16
 _kernelname=${pkgbase#linux}
 _desc="Thinkpad T14s OLED edition"
-pkgver="6.16.1"
+pkgver="6.16.3"
 pkgrel=0
 arch=('aarch64')
 url="http://www.kernel.org/"
@@ -40,7 +40,7 @@ prepare() {
   cd $_srcname
 
   # Apply patches
-  patch -Np1 -i "${srcdir}/0001-drm-msm-fix-race-in-Adreno-header-generation.patch"
+  # patch -Np1 -i "${srcdir}/0001-drm-msm-fix-race-in-Adreno-header-generation.patch"
 
   echo "Setting version..."
   #scripts/setlocalversion --save-scmversion

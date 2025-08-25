@@ -6,7 +6,7 @@ inputfile = sys.argv[1]
 outputfile = sys.argv[2]
 
 # uncomment for testing
-# inputfile = "/home/alex/src/git/x13s-alarm/linux-x13s/config"
+# inputfile = "/home/alex/src/git/t14s-oled-alarm/linux-t14s-oled/config"
 # outputfile = "config.out"
 
 with open(inputfile, "r") as f:
@@ -16,7 +16,7 @@ anomalies = {
     "CONFIG_CC_IMPLICIT_FALLTHROUGH": '"-Wimplicit-fallthrough=5"',
 }
 
-x13s_options = {
+t14s-oled_options = {
     # Add raw HID support so FIDO works in browsers
     "CONFIG_HIDRAW": "y",
     "CONFIG_USB_HIDDEV": "y",
@@ -137,7 +137,7 @@ x13s_options = {
     "CONFIG_NETFS_DEBUG": "n",
 }
 leftovers = []
-for key in x13s_options:
+for key in t14s-oled_options:
     leftovers.append(key)
 
 options = {}
@@ -162,9 +162,9 @@ output_lines = []
 for line in new_lines:
     if isinstance(line, tuple):
         key, value = line
-        if key in x13s_options:
-            if value != x13s_options[key]:
-                output_lines.append(f"{key}={x13s_options[key]}\n")
+        if key in t14s-oled_options:
+            if value != t14s-oled_options[key]:
+                output_lines.append(f"{key}={t14s-oled_options[key]}\n")
             else:
                 output_lines.append(f"{key}={value}")
             leftovers.remove(key)
@@ -178,7 +178,7 @@ for line in new_lines:
         output_lines.append(line)
 
 for extra_config in leftovers:
-    output_lines.append(f"{extra_config}={x13s_options[extra_config]}\n")
+    output_lines.append(f"{extra_config}={t14s-oled_options[extra_config]}\n")
 
 with open(outputfile, "w") as f:
     f.writelines(output_lines)
