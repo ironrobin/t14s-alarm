@@ -59,6 +59,8 @@ prepare() {
 
 build() {
   cd ${_srcname}
+  export ARCH="$_arch"
+  export CROSS_COMPILE="$_cross"
 
   # get kernel version
   make prepare
@@ -90,6 +92,8 @@ _package() {
   install=${pkgname}.install
 
   cd $_srcname
+  export ARCH="$_arch"
+  export CROSS_COMPILE="$_cross"
   local kernver="$(<version)"
   local modulesdir="$pkgdir/usr/lib/modules/$kernver"
 
