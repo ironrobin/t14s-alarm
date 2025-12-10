@@ -16,7 +16,7 @@ anomalies = {
     "CONFIG_CC_IMPLICIT_FALLTHROUGH": '"-Wimplicit-fallthrough=5"',
 }
 
-t14s-oled_options = {
+t14s_oled_options = {
     # Add raw HID support so FIDO works in browsers
     "CONFIG_HIDRAW": "y",
     "CONFIG_USB_HIDDEV": "y",
@@ -29,12 +29,15 @@ t14s-oled_options = {
     "CONFIG_PHY_QCOM_QMP": "y",
     "CONFIG_PHY_QCOM_QMP_PCIE": "y",
     "CONFIG_PHY_QCOM_QMP_PCIE_8996": "y",
+    "CONFIG_PCIE_QCOM_COMMON": "y",
+    "CONFIG_PCIE_QCOM": "y",
     "CONFIG_PHY_QCOM_QMP_UFS": "y",
     "CONFIG_PHY_QCOM_QMP_USB": "y",
     "CONFIG_PHY_QCOM_QUSB2": "y",
     "CONFIG_PHY_QCOM_USB_SNPS_FEMTO_V2": "y",
     "CONFIG_BRIDGE": "m",
     "CONFIG_BRIDGE_NF_EBTABLES": "n",
+    "CONFIG_BRIDGE_NF_EBTABLES_LEGACY": "n",
     "CONFIG_BRIDGE_NETFILTER": "m",
     "CONFIG_BRIDGE_IGMP_SNOOPING": "y",
     "CONFIG_BRIDGE_MRP": "n",
@@ -49,9 +52,30 @@ t14s-oled_options = {
     "CONFIG_IP_NF_TARGET_NETMAP": "n",
     "CONFIG_IP_NF_TARGET_REDIRECT": "n",
     # Turn on regularly used filystems
-    "CONFIG_EROFS_FS": "y",
     "CONFIG_SQUASHFS": "y",
     "CONFIG_SQUASHFS_XZ": "y",
+    "CONFIG_SQUASHFS_CHOICE_DECOMP_BY_MOUNT": "n",
+    "CONFIG_SQUASHFS_COMPILE_DECOMP_SINGLE": "y",
+    "CONFIG_SQUASHFS_XATTR": "n",
+    "CONFIG_SQUASHFS_COMP_CACHE_FULL": "n",
+    "CONFIG_SQUASHFS_ZLIB": "y",
+    "CONFIG_SQUASHFS_LZ4": "n",
+    "CONFIG_SQUASHFS_LZO": "n",
+    "CONFIG_SQUASHFS_ZSTD": "n",
+    "CONFIG_SQUASHFS_4K_DEVBLK_SIZE": "n",
+    "CONFIG_SQUASHFS_EMBEDDED": "n",
+    "CONFIG_EROFS_FS_DEBUG": "n",
+    "CONFIG_EROFS_FS_XATTR": "y",
+    "CONFIG_EROFS_FS_POSIX_ACL": "y",
+    "CONFIG_EROFS_FS_SECURITY": "y",
+    "CONFIG_EROFS_FS_BACKED_BY_FILE": "y",
+    "CONFIG_EROFS_FS_ZIP": "y",
+    "CONFIG_EROFS_FS_ZIP_LZMA": "n",
+    "CONFIG_EROFS_FS_ZIP_DEFLATE": "n",
+    "CONFIG_EROFS_FS_ZIP_ZSTD": "n",
+    "CONFIG_EROFS_FS_ZIP_ACCEL": "n",
+    "CONFIG_EROFS_FS_ONDEMAND": "n",
+    "CONFIG_EROFS_FS_PCPU_KTHREAD": "n",
     "CONFIG_XFS_FS": "m",
     "CONFIG_XFS_SUPPORT_V4": "y",
     "CONFIG_XFS_SUPPORT_ASCII_CI": "y",
@@ -62,6 +86,7 @@ t14s-oled_options = {
     "CONFIG_XFS_WARN": "n",
     "CONFIG_XFS_DEBUG": "n",
     "CONFIG_BTRFS_FS": "m",
+    "CONFIG_BTRFS_EXPERIMENTAL": "n",
     "CONFIG_BTRFS_FS_POSIX_ACL": "y",
     "CONFIG_BTRFS_FS_RUN_SANITY_TESTS": "y",
     "CONFIG_BTRFS_DEBUG": "y",
@@ -102,6 +127,8 @@ t14s-oled_options = {
     "CONFIG_SUNRPC_GSS": "m",
     "CONFIG_SUNRPC_DEBUG": "n",
     "CONFIG_RPCSEC_GSS_KRB5": "m",
+    "CONFIG_RPCSEC_GSS_KRB5_ENCTYPES_AES_SHA1": "y",
+    "CONFIG_RPCSEC_GSS_KRB5_ENCTYPES_AES_SHA2": "n",
     "CONFIG_CIFS": "m",
     "CONFIG_CIFS_STATS2": "y",
     "CONFIG_CIFS_ALLOW_INSECURE_LEGACY": "y",
@@ -112,6 +139,7 @@ t14s-oled_options = {
     "CONFIG_CIFS_DEBUG_DUMP_KEYS": "n",
     "CONFIG_CIFS_DFS_UPCALL": "n",
     "CONFIG_CIFS_SWN_UPCALL": "n",
+    "CONFIG_CIFS_COMPRESSION": "n",
     "CONFIG_SMB_SERVER": "n",
     "CONFIG_SMBFS": "m",
     "CONFIG_NLS_UCS2_UTILS": "m",
@@ -137,7 +165,7 @@ t14s-oled_options = {
     "CONFIG_NETFS_DEBUG": "n",
 }
 leftovers = []
-for key in t14s-oled_options:
+for key in t14s_oled_options:
     leftovers.append(key)
 
 options = {}
@@ -162,9 +190,9 @@ output_lines = []
 for line in new_lines:
     if isinstance(line, tuple):
         key, value = line
-        if key in t14s-oled_options:
-            if value != t14s-oled_options[key]:
-                output_lines.append(f"{key}={t14s-oled_options[key]}\n")
+        if key in t14s_oled_options:
+            if value != t14s_oled_options[key]:
+                output_lines.append(f"{key}={t14s_oled_options[key]}\n")
             else:
                 output_lines.append(f"{key}={value}")
             leftovers.remove(key)
@@ -178,7 +206,7 @@ for line in new_lines:
         output_lines.append(line)
 
 for extra_config in leftovers:
-    output_lines.append(f"{extra_config}={t14s-oled_options[extra_config]}\n")
+    output_lines.append(f"{extra_config}={t14s_oled_options[extra_config]}\n")
 
 with open(outputfile, "w") as f:
     f.writelines(output_lines)

@@ -2,18 +2,29 @@
 # Maintainer: Kevin Mihelich <kevin@archlinuxarm.org>
 
 buildarch=8
-_branch=thinkpad-t14s-oled-linux-6.16.y
+_branch=lenovo-t14s-linux-6.18.y
 
 pkgbase=linux-t14s-oled
-_srcname=linux-6.16
+_srcname=linux-6.18
 _kernelname=${pkgbase#linux}
 _desc="Thinkpad T14s OLED edition"
-pkgver="6.16.3"
+pkgver="6.18.0"
 pkgrel=0
-arch=('aarch64')
+case "$CARCH" in
+  aarch64)
+    _arch=arm64
+    _cross=aarch64-linux-gnu-
+    arch=('aarch64')
+    ;;
+  x86_64)
+    _arch=x86_64
+    _cross=""
+    arch=('x86_64')
+    ;;
+esac
 url="http://www.kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'vboot-utils' 'dtc')
+makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'dtc')
 options=('!strip')
 source=('config'
         'linux.preset'
@@ -21,15 +32,13 @@ source=('config'
         '90-linux.hook'
         'mkinitcpio.conf.d-t14s-oled.conf'
 )
-md5sums=('94b7a6d290b894a81a5caf9dbed8a5af'
+md5sums=('d07ffc35dd6c049191b22435da0528f0'
          'f70da982cd3da3d37f09102eb4f621ac'
          '0a5f16bfec6ad982a2f6782724cca8ba'
          '6f99095fbe9f577233b53a83802aab59'
-         '8c3662b1c192655e88a704e52fc4e09a'
-)
+         '30e650542ace6598aef08cff587e6e7f')
 
 prepare() {
-  MAKEFLAGS=-j8
   echo "Shallow cloning steev's linux repo"
   # if src dir exists, remove it
   [[ -d ${_srcname} ]] && rm -rf ${_srcname}
@@ -89,7 +98,7 @@ _package() {
   install -Dm644 arch/arm64/boot/Image -T "${pkgdir}/boot/vmlinux"
   #make INSTALL_DTBS_PATH="${pkgdir}/boot/dtbs" dtbs_install
   # We just need the t14s-oled dtb
-  install -Dm644 arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s-oled.dtb -t "${pkgdir}/boot"
+  install -Dm644 arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s-oled.dts -t "${pkgdir}/boot"
 
   echo "Installing modules..."
   make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
