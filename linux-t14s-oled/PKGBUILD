@@ -9,7 +9,7 @@ _srcname=linux-6.18
 _kernelname=${pkgbase#linux}
 _desc="Thinkpad T14s OLED edition"
 pkgver="6.18.0"
-pkgrel=0
+pkgrel=1
 case "$CARCH" in
   aarch64)
     _arch=arm64
@@ -102,7 +102,7 @@ _package() {
   install -Dm644 arch/arm64/boot/Image -T "${pkgdir}/boot/vmlinux"
   #make INSTALL_DTBS_PATH="${pkgdir}/boot/dtbs" dtbs_install
   # We just need the t14s-oled dtb
-  install -Dm644 arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s-oled.dts -t "${pkgdir}/boot"
+  install -Dm644 arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s-oled.dtb -t "${pkgdir}/boot"
 
   echo "Installing modules..."
   make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
